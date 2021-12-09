@@ -9,3 +9,8 @@
   margin: 0 1rem;
   text-decoration: none;
 }
+
+.hilite {
+  background-color: red;
+  color: white;
+}

@@ -34,7 +34,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.data = [];
-
     for (let i = 0; i < 10000; i++) {
       this.data.push({
         name: randomWords({ exactly: 3, join: " " }),
@@ -74,16 +73,51 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.subscriptions.unsubscribe();
   }
 
+  /**
+   * filterFunction - return true if searchstring is present in column
+   * @param column - the property 'name', 'description' or 'status' of entry
+   * @param query - the searchstring to filter on
+   * @returns - true if at least 1 element equals the searchstring
+   */
+  private filterFunction(column: string, query: string): boolean {
+    // convert string to array
+    return (
+      this[column]
+        .split(" ")
+        // at least 1 word should match query
+        .some((word: string) => word.indexOf(query) === 0)
+    );
+  }
+
+  private hiliteWord(column: string, word: string, klass: string) {
+    return this[column].replace(word, `<span class="${klass}">examine</span>`);
+  }
+
   populateFilteredData(filter) {
+    filter = filter.trim();
+
     if (!filter) {
       this.filteredData = this.data.slice();
+      return;
     }
 
+    // make an array of the space-separated string
+    const _filter = filter.split(" ");
+    // filter the data - all searchstrings should occur in at least 1 column
     this.filteredData = this.data.filter((entry) => {
       return (
-        entry.name.indexOf(filter) !== -1 ||
-        entry.description.indexOf(filter) !== -1 ||
-        entry.status.indexOf(filter) !== -1
+        // search for query in 'name' column
+        _filter.some((query: string) =>
+          this.filterFunction.call(entry, "name", query)
+        ) ||
+        // search for query in 'description' column
+        _filter.some((query: string) =>
+          this.filterFunction.call(entry, "description", query)
+        ) ||
+        // search for query in 'status' column
+        _filter.some((query: string) =>
+          this.filterFunction.call(entry, "status", query)
+        )
       );
     });
     this.lastPage = Math.ceil(this.filteredData.length / this.pageSize);
