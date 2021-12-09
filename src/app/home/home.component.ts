@@ -21,11 +21,14 @@ export interface IEntry {
 })
 export class HomeComponent implements OnInit, AfterViewInit {
   @ViewChild("query") query: ElementRef;
+  @ViewChild("buttonPrev") buttonPrev: ElementRef;
+  @ViewChild("buttonNext") buttonNext: ElementRef;
   subscriptions = new Subscription();
 
   data: IEntry[];
   page = 1;
-  pageSize = 20;
+  pageSize = 10;
+  lastPage = 0;
   emptyArray = new Array(1000);
   filteredData: IEntry[];
 
@@ -39,7 +42,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         status: ["new", "submitted", "failed"][Math.floor(Math.random() * 3)],
       });
     }
-
+    this.lastPage = Math.ceil(this.data.length / this.pageSize);
     this.populateFilteredData("");
   }
 
@@ -47,6 +50,22 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.subscriptions.add(
       fromEvent(this.query.nativeElement, "input").subscribe(
         (e: KeyboardEvent) => this.updateFilter(e)
+      )
+    );
+    this.subscriptions.add(
+      fromEvent(this.buttonNext.nativeElement, "click").subscribe(
+        (e: Event) => {
+          e.preventDefault();
+          this.page = this.page < this.lastPage ? ++this.page : this.lastPage;
+        }
+      )
+    );
+    this.subscriptions.add(
+      fromEvent(this.buttonPrev.nativeElement, "click").subscribe(
+        (e: Event) => {
+          e.preventDefault();
+          this.page = this.page > 1 ? --this.page : 1;
+        }
       )
     );
   }
@@ -67,6 +86,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         entry.status.indexOf(filter) !== -1
       );
     });
+    this.lastPage = Math.ceil(this.filteredData.length / this.pageSize);
   }
 
   updateFilter($event: KeyboardEvent) {
