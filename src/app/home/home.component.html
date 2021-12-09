@@ -1,6 +1,6 @@
 <div>
   Search:
-  <input type="text" (input)="updateFilter($event)">
+  <input type="text" #query />
 </div>
 
 <table>
@@ -13,7 +13,11 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let entry of filteredData|slice:((page - 1) * pageSize):(page * pageSize)">
+    <tr
+      *ngFor="
+        let entry of filteredData | slice: (page - 1) * pageSize:page * pageSize
+      "
+    >
       <th>{{ entry.name }}</th>
       <td>{{ entry.description }}</td>
       <td>{{ entry.status }}</td>
