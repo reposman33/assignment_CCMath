@@ -1,0 +1,25 @@
+<div>
+  Search:
+  <input type="text" (input)="updateFilter($event)">
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Status</th>
+      <th>Cool column</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let entry of filteredData|slice:((page - 1) * pageSize):(page * pageSize)">
+      <th>{{ entry.name }}</th>
+      <td>{{ entry.description }}</td>
+      <td>{{ entry.status }}</td>
+      <td>
+        <div *ngFor="let x of emptyArray"></div>
+      </td>
+    </tr>
+  </tbody>
+</table>
