@@ -109,6 +109,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
     );
   }
 
+  // attempt to add a class to a found word...
+  private hiliteWord(column: string, word: string, klass: string) {
+    return this[column].replace(word, `<span class="${klass}">examine</span>`);
+  }
+
   populateFilteredData(filter) {
     filter = filter.trim();
 
