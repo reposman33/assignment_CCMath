@@ -1,35 +1,50 @@
-<div>
-  Search:
-  <input type="text" #query />
-</div>
+<div class="container">
+  <div>
+    <h2>Search:</h2>
+    <input type="text" #query />
+  </div>
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Description</th>
-      <th>Status</th>
-      <th>Cool column</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr
-      *ngFor="
-        let entry of filteredData | slice: (page - 1) * pageSize:page * pageSize
-      "
+  <table class="striped-table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Status</th>
+        <th>Cool column</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        *ngFor="
+          let entry of filteredData
+            | slice: (page - 1) * pageSize:page * pageSize
+        "
+      >
+        <th>{{ entry.name }}</th>
+        <td>{{ entry.description }}</td>
+        <td>{{ entry.status }}</td>
+        <td>
+          <div *ngFor="let x of emptyArray"></div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="center">
+    <button
+      [ngClass]="{ buttonDisabled: buttonPrevDisabled }"
+      [disabled]="buttonPrevDisabled"
+      #buttonPrev
     >
-      <th>{{ entry.name }}</th>
-      <td>{{ entry.description }}</td>
-      <td>{{ entry.status }}</td>
-      <td>
-        <div *ngFor="let x of emptyArray"></div>
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-<div class="center">
-  <a href="#" #buttonPrev>&lt;</a>
-  page {{ page }} of {{ lastPage }}
-  <a href="#" #buttonNext>&gt;</a>
+      &lt;
+    </button>
+    <span class="margin-h-3">page {{ page }} of {{ lastPage }}</span>
+    <button
+      [ngClass]="{ buttonDisabled: buttonNextDisabled }"
+      [disabled]="buttonNextDisabled"
+      #buttonNext
+    >
+      &gt;
+    </button>
+  </div>
 </div>

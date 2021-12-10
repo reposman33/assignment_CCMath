@@ -14,3 +14,16 @@
   background-color: red;
   color: white;
 }
+
+.margin-h-3 {
+  margin: 0 3rem;
+}
+button {
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+.buttonDisabled {
+  cursor: auto;
+  background-color: #a7c3e9;
+}
